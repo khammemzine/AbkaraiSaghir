@@ -1,0 +1,155 @@
+/* الأساسيات */
+body {
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+  color: #333;
+  text-align: center;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* فقاعات */
+.bubble {
+  position: absolute;
+  bottom: -40px;
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: rise 8s linear infinite;
+  z-index: 0;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-130vh) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* الهيدر */
+header {
+  background-color: #e0f7fa;
+  padding: 20px 15px;
+  border-bottom: 3px solid #2196f3;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 2;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* العناوين */
+h1 {
+  color: #1e88e5;
+  margin: 10px 0 5px;
+  font-size: 2.2rem;
+}
+
+.slogan {
+  font-size: 1.2em;
+  color: #ec407a;
+}
+
+/* قائمة التنقل */
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #2196f3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 3;
+}
+
+nav ul li {
+  margin: 0;
+}
+
+nav ul li a {
+  display: block;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+nav ul li a:hover {
+  background-color: #1976d2;
+  transform: scale(1.05);
+}
+
+/* محتوى الصفحة */
+main {
+  padding: 40px 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* التذييل */
+footer {
+  background-color: #eeeeee;
+  padding: 15px;
+  font-size: 0.9em;
+  color: #777;
+  border-top: 1px solid #ccc;
+  position: relative;
+  z-index: 2;
+}
+
+/* الأزرار العامة */
+.btn {
+  font-size: 1rem;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+}
+
+.btn:hover {
+  background-color: #1976d2;
+  transform: translateY(-2px);
+}
+
+/* تحسينات للموبايل */
+@media (max-width: 576px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .slogan {
+    font-size: 1rem;
+  }
+
+  nav ul li a {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  main {
+    padding: 30px 15px;
+  }
+}

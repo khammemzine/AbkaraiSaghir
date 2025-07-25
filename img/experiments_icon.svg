@@ -1,0 +1,6 @@
+<!-- img/experiments_icon.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="20" fill="#b3e5fc"/>
+  <path d="M40 20 v40 l-20 40 h88 l-20-40 v-40" fill="#4dd0e1" stroke="#0288d1" stroke-width="4"/>
+  <circle cx="64" cy="30" r="6" fill="#0288d1"/>
+</svg>

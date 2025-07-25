@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تلوين الزهرة</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom, #fce4ec, #ffffff);
+      text-align: center;
+      padding: 20px;
+    }
+    svg {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      display: block;
+      border: 2px dashed #f48fb1;
+      border-radius: 10px;
+      background-color: #fff;
+    }
+    .palette {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .color-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      outline: 2px solid #ccc;
+      transition: transform 0.2s;
+    }
+    .color-btn:hover {
+      transform: scale(1.1);
+    }
+    .home-link {
+      margin-top: 30px;
+      display: inline-block;
+    }
+    .home-link a {
+      text-decoration: none;
+      padding: 10px 20px;
+      background-color: #d81b60;
+      color: #fff;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .home-link a:hover {
+      background-color: #c2185b;
+    }
+    @media (max-width: 400px) {
+      .color-btn {
+        width: 30px;
+        height: 30px;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 لون الزهرة</h1>
+
+  <svg id="flower" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <circle class="flower-part" cx="100" cy="100" r="20" fill="#f8bbd0"/>
+    <circle class="flower-part" cx="100" cy="50" r="20" fill="#f48fb1"/>
+    <circle class="flower-part" cx="100" cy="150" r="20" fill="#f48fb1"/>
+    <circle class="flower-part" cx="50" cy="100" r="20" fill="#f48fb1"/>
+    <circle class="flower-part" cx="150" cy="100" r="20" fill="#f48fb1"/>
+    <circle class="flower-part" cx="70" cy="70" r="15" fill="#ce93d8"/>
+    <circle class="flower-part" cx="130" cy="70" r="15" fill="#ce93d8"/>
+    <circle class="flower-part" cx="70" cy="130" r="15" fill="#ce93d8"/>
+    <circle class="flower-part" cx="130" cy="130" r="15" fill="#ce93d8"/>
+  </svg>
+
+  <div class="palette">
+    <button class="color-btn" style="background-color: #f44336;" onclick="setColor('#f44336')"></button>
+    <button class="color-btn" style="background-color: #4caf50;" onclick="setColor('#4caf50')"></button>
+    <button class="color-btn" style="background-color: #2196f3;" onclick="setColor('#2196f3')"></button>
+    <button class="color-btn" style="background-color: #ffeb3b;" onclick="setColor('#ffeb3b')"></button>
+    <button class="color-btn" style="background-color: #9c27b0;" onclick="setColor('#9c27b0')"></button>
+    <button class="color-btn" style="background-color: #000000;" onclick="setColor('#000000')"></button>
+  </div>
+
+  <div class="home-link">
+    <a href="../activities.html">🔙 العودة إلى الأنشطة</a>
+  </div>
+
+  <script>
+    let selectedColor = '#f44336';
+    function setColor(color) {
+      selectedColor = color;
+    }
+
+    const parts = document.querySelectorAll('.flower-part');
+    parts.forEach(part => {
+      part.style.cursor = 'pointer';
+      part.addEventListener('click', () => {
+        part.setAttribute('fill', selectedColor);
+      });
+    });
+  </script>
+
+</body>
+</html>

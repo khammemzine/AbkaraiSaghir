@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تلوين السيارة</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+      text-align: center;
+      padding: 20px;
+    }
+    svg {
+      width: 90%;
+      max-width: 400px;
+      margin: 20px auto;
+      display: block;
+      border: 2px dashed #90caf9;
+      border-radius: 10px;
+      background-color: #fff;
+    }
+    .palette {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .color-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      outline: 2px solid #ccc;
+      transition: transform 0.2s;
+    }
+    .color-btn:hover {
+      transform: scale(1.1);
+    }
+    .home-link {
+      margin-top: 30px;
+      display: inline-block;
+    }
+    .home-link a {
+      text-decoration: none;
+      padding: 10px 20px;
+      background-color: #1976d2;
+      color: #fff;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .home-link a:hover {
+      background-color: #1565c0;
+    }
+    @media (max-width: 400px) {
+      .color-btn {
+        width: 30px;
+        height: 30px;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 لون السيارة</h1>
+
+  <svg id="car" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180">
+    <rect width="300" height="180" fill="#ffffff"/>
+    <rect class="car-part" x="60" y="70" width="180" height="50" rx="10" ry="10" fill="#90caf9"/>
+    <rect class="car-part" x="90" y="40" width="120" height="40" rx="10" ry="10" fill="#90caf9"/>
+    <rect class="car-part" x="100" y="45" width="30" height="30" rx="5" ry="5" fill="#e1f5fe"/>
+    <rect class="car-part" x="140" y="45" width="30" height="30" rx="5" ry="5" fill="#e1f5fe"/>
+    <rect class="car-part" x="180" y="45" width="30" height="30" rx="5" ry="5" fill="#e1f5fe"/>
+    <circle class="car-part" cx="90" cy="130" r="20" fill="#616161"/>
+    <circle class="car-part" cx="210" cy="130" r="20" fill="#616161"/>
+  </svg>
+
+  <div class="palette">
+    <button class="color-btn" style="background-color: #f44336;" onclick="setColor('#f44336')"></button>
+    <button class="color-btn" style="background-color: #4caf50;" onclick="setColor('#4caf50')"></button>
+    <button class="color-btn" style="background-color: #2196f3;" onclick="setColor('#2196f3')"></button>
+    <button class="color-btn" style="background-color: #ffeb3b;" onclick="setColor('#ffeb3b')"></button>
+    <button class="color-btn" style="background-color: #9c27b0;" onclick="setColor('#9c27b0')"></button>
+    <button class="color-btn" style="background-color: #000000;" onclick="setColor('#000000')"></button>
+  </div>
+
+  <div class="home-link">
+    <a href="../activities.html">🔙 العودة إلى الأنشطة</a>
+  </div>
+
+  <script>
+    let selectedColor = '#f44336';
+    function setColor(color) {
+      selectedColor = color;
+    }
+
+    const parts = document.querySelectorAll('.car-part');
+    parts.forEach(part => {
+      part.style.cursor = 'pointer';
+      part.addEventListener('click', () => {
+        part.setAttribute('fill', selectedColor);
+      });
+    });
+  </script>
+</body>
+</html>
