@@ -11,30 +11,43 @@
   <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #e3f2fd, #fce4ec);
+      background: radial-gradient(circle at top left, #e1f5fe, #fce4ec);
       min-height: 100vh;
+      overflow-x: hidden;
     }
     .logo img {
-      max-width: 220px;
+      max-width: 240px;
       animation: popIn 1.2s ease-out;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease;
+    }
+    .logo img:hover {
+      transform: rotate(-3deg) scale(1.05);
     }
     .card {
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      padding: 1rem;
-      animation: fadeIn 1s ease-in;
+      background: linear-gradient(145deg, #ffffff, #f1f1f1);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.07);
+      animation: fadeIn 1s ease-in-out;
     }
     .btn {
       transition: transform 0.3s ease, background-color 0.3s ease;
+      font-weight: bold;
     }
     .btn:hover {
-      transform: scale(1.05);
+      transform: scale(1.07);
     }
     .svg-decor {
       width: 100%;
       height: auto;
       margin-top: 20px;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      color: #0d47a1;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px #fff;
     }
     @keyframes fadeIn {
       0% { opacity: 0; transform: translateY(20px); }
@@ -46,6 +59,9 @@
     }
     footer {
       font-size: 0.9rem;
+      background-color: #f1f8e9;
+      padding: 1rem 0;
+      border-top: 1px solid #ccc;
     }
     @media (max-width: 576px) {
       h1 {
@@ -55,13 +71,7 @@
         font-size: 1rem;
       }
       .card {
-        padding: 0.8rem;
-      }
-    }
-    @media (max-width: 400px) {
-      .btn {
-        font-size: 0.9rem;
-        padding: 8px 12px;
+        padding: 1rem;
       }
     }
   </style>
@@ -71,7 +81,7 @@
   <audio id="hoverSound" src="sounds/click.mp3" preload="auto"></audio>
 
   <!-- شريط التنقل -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="index.html">🚀 العبقري الصغير</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
@@ -81,10 +91,11 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link" href="activities.html">🎨 النشاطات</a></li>
           <li class="nav-item"><a class="nav-link" href="experiments.html">🧪 التجارب</a></li>
-          <li class="nav-item"><a class="nav-link" href="quran.html">📖 قرآني</a></li>
           <li class="nav-item"><a class="nav-link" href="ocean.html">🌊 البحار والمحيطات</a></li>
           <li class="nav-item"><a class="nav-link" href="space.html">🌌 الفضاء</a></li>
           <li class="nav-item"><a class="nav-link" href="story.html">📖 قصة وعبرة</a></li>
+          <li class="nav-item"><a class="nav-link" href="quran.html">📖 قرآني</a></li>
+          <li class="nav-item"><a class="nav-link" href="azkar.html">📿 ركن الأذكار</a></li>
           <li class="nav-item"><a class="nav-link" href="parents.html">👨‍👩‍👧‍👦 ركن الآباء</a></li>
           <li class="nav-item"><a class="nav-link" href="about.html">ℹ️ عن الموقع</a></li>
           <li class="nav-item"><a class="nav-link" href="contact.html">📬 اتصل بنا</a></li>
@@ -99,46 +110,37 @@
       <img src="img/logo.png" alt="شعار العبقري الصغير" class="img-fluid mx-auto d-block">
     </div>
     <h1 class="fw-bold text-primary">فضاء العبقري الصغير</h1>
-    <p class="lead text-dark">استمتع وتعلم مع محمد ياسين</p>
+    <p class="lead text-dark">استمتع وتعلم مع محمد ياسين من خلال مغامرات تعليمية ممتعة!</p>
   </div>
 
- <!-- زخرفة SVG (مرفوعة أكثر إلى الأعلى) -->
-<div class="container text-center mb-2 mt-1">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 50" width="100%" height="12" class="svg-decor">
-    <rect width="800" height="50" fill="none"/>
-    
-    <circle cx="60" cy="25" r="10" fill="#ffcc80"/>
-    <rect x="120" y="15" width="20" height="20" fill="#81d4fa" rx="4"/>
-    <polygon points="200,40 215,10 230,40" fill="#ce93d8"/>
-    <circle cx="290" cy="25" r="8" fill="#aed581"/>
-    <rect x="340" y="15" width="20" height="20" fill="#f48fb1" rx="5"/>
-    <polygon points="430,40 445,10 460,40" fill="#90caf9"/>
-    <circle cx="530" cy="25" r="8" fill="#ffab91"/>
-    <rect x="590" y="15" width="20" height="20" fill="#a5d6a7" rx="6"/>
-    <circle cx="690" cy="25" r="9" fill="#f06292"/>
-  </svg>
-</div>
-
-
-
-
-
- <!-- ... بقية الكود كما هو في الأعلى ... -->
+  <!-- زخرفة SVG -->
+  <div class="container text-center mb-2 mt-1">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 50" width="100%" height="12" class="svg-decor">
+      <circle cx="60" cy="25" r="10" fill="#ffcc80"/>
+      <rect x="120" y="15" width="20" height="20" fill="#81d4fa" rx="4"/>
+      <polygon points="200,40 215,10 230,40" fill="#ce93d8"/>
+      <circle cx="290" cy="25" r="8" fill="#aed581"/>
+      <rect x="340" y="15" width="20" height="20" fill="#f48fb1" rx="5"/>
+      <polygon points="430,40 445,10 460,40" fill="#90caf9"/>
+      <circle cx="530" cy="25" r="8" fill="#ffab91"/>
+      <rect x="590" y="15" width="20" height="20" fill="#a5d6a7" rx="6"/>
+      <circle cx="690" cy="25" r="9" fill="#f06292"/>
+    </svg>
+  </div>
 
   <!-- أقسام الموقع -->
   <div class="container text-center mt-4">
-    <h3 class="text-dark mb-4">📚 اكتشف أقسام الموقع</h3>
-
+    <h3 class="section-title">📚 اكتشف أقسام الموقع</h3>
     <div class="card shadow">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <!-- روابط الأقسام -->
+        <div class="col"><a href="quran.html" class="btn btn-outline-warning w-100" onmouseover="playSound()">📖 قرآني</a></div>
+        <div class="col"><a href="azkar.html" class="btn btn-outline-danger w-100" onmouseover="playSound()">📿 ركن الأذكار</a></div>
+        <div class="col"><a href="story.html" class="btn btn-outline-warning w-100" onmouseover="playSound()">📖 قصة وعبرة</a></div>
         <div class="col"><a href="activities.html" class="btn btn-outline-primary w-100" onmouseover="playSound()">🎨 النشاطات</a></div>
         <div class="col"><a href="experiments.html" class="btn btn-outline-success w-100" onmouseover="playSound()">🧪 التجارب</a></div>
-        <div class="col"><a href="quran.html" class="btn btn-outline-warning w-100" onmouseover="playSound()">📖 قرآني</a></div>
-        <div class="col"><a href="parents.html" class="btn btn-outline-dark w-100" onmouseover="playSound()">👨‍👩‍👧‍👦 ركن الآباء</a></div>
         <div class="col"><a href="space.html" class="btn btn-outline-secondary w-100" onmouseover="playSound()">🌌 الكون والفضاء</a></div>
-        <div class="col"><a href="story.html" class="btn btn-outline-warning w-100" onmouseover="playSound()">📖 قصة وعبرة</a></div>
         <div class="col"><a href="ocean.html" class="btn btn-outline-primary w-100" onmouseover="playSound()">🌊 عالم البحار والمحيطات</a></div>
+        <div class="col"><a href="parents.html" class="btn btn-outline-dark w-100" onmouseover="playSound()">👨‍👩‍👧‍👦 ركن الآباء</a></div>
         <div class="col"><a href="about.html" class="btn btn-outline-info w-100" onmouseover="playSound()">ℹ️ عن الموقع</a></div>
         <div class="col"><a href="contact.html" class="btn btn-outline-secondary w-100" onmouseover="playSound()">📬 اتصل بنا</a></div>
       </div>
@@ -150,12 +152,11 @@
     👀 عدد زيارات الموقع: ... جاري التحميل ...
   </div>
 
-  <!-- تذييل -->
+  <!-- التذييل -->
   <footer class="text-center mt-5 mb-3 text-muted">
     &copy; 2025 فضاء العبقري الصغير - جميع الحقوق محفوظة
   </footer>
 
-  <!-- الصوت -->
   <script>
     function playSound() {
       const sound = document.getElementById("hoverSound");
@@ -164,10 +165,6 @@
         sound.play();
       }
     }
-  </script>
-
-  <!-- سكربت عداد الزيارات -->
-  <script>
     fetch('https://api.countapi.xyz/hit/AbkariSaghir/index')
       .then(res => res.json())
       .then(data => {
