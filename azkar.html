@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ركن الأذكار</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Amiri', serif;
+      background: linear-gradient(to bottom, #fdfcfb, #e8f5e9);
+      background-image: url('img/islamic-new-year-pattern-background.jpg');
+      background-repeat: repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      padding: 2rem;
+    }
+    .azkar-card {
+      background-color: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(7px) brightness(1.1);
+      border-radius: 25px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .azkar-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+    }
+    .azkar-heading-box {
+      background-color: rgba(255, 255, 255, 0.95);
+      border: 2px solid #2e7d32;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .azkar-heading-box h1 {
+      color: #1b5e20;
+      margin-bottom: 0.4rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+      font-weight: 700;
+      font-size: 1.7rem;
+    }
+    .azkar-heading-box small {
+      display: block;
+      margin-top: 0.3rem;
+      font-size: 1rem;
+    }
+    .azkar-text {
+      font-size: 1.4rem;
+      color: #2f2f2f;
+      line-height: 2.2;
+    }
+    .btn-group {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      margin: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="azkar-heading-box">
+      <h1>بسم الله الرحمن الرحيم</h1>
+      <small style="color:#2e7d32;">﴿ وَذَكِّرْ فَإِنَّ الذِّكْرَى تَنْفَعُ الْمُؤْمِنِينَ ﴾</small>
+    </div>
+
+    <div id="azkarContainer">
+      <div class="azkar-card text-center">
+        <img src="img/islamic-decor-top.png" alt="زخرفة إسلامية" style="width:80px; margin-bottom: 10px;">
+        <h5 class="text-success" id="azkarTitle">ذكر الصباح</h5>
+        <p class="azkar-text" id="azkarText">
+          "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير،
+          رب أسألك خير ما في هذا اليوم وخير ما بعده، وأعوذ بك من شر ما في هذا اليوم وشر ما بعده،
+          رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر."
+        </p>
+        <div class="btn-group">
+          <button class="btn btn-outline-primary" onclick="playAudio(currentIndex)">▶️ استمع</button>
+          <button class="btn btn-outline-danger" onclick="stopAudio()">⏹️ إيقاف</button>
+          <button class="btn btn-outline-success" onclick="showRandomAzkar()">🔄 ذكر عشوائي</button>
+          <button class="btn btn-outline-warning" onclick="showPreviousAzkar()">⏮ السابق</button>
+          <button class="btn btn-outline-warning" onclick="showNextAzkar()">⏭ التالي</button>
+        </div>
+        <img src="img/islamic-decor-bottom.png" alt="زخرفة إسلامية" style="width:80px; margin-top: 10px;">
+      </div>
+    </div>
+  </div>
+
+  <audio id="audioPlayer" src="" preload="auto"></audio>
+  <script>
+    const azkarList = [
+      {
+        title: 'ذكر الصباح',
+        text: `"أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذا اليوم وخير ما بعده، وأعوذ بك من شر ما في هذا اليوم وشر ما بعده، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر."`,
+        audio: 'audio/morning.mp3'
+      },
+      {
+        title: 'ذكر المساء',
+        text: `"أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذه الليلة وخير ما بعدها، وأعوذ بك من شر هذه الليلة وشر ما بعدها، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر."`,
+        audio: 'audio/evening.mp3'
+      },
+      {
+        title: 'ذكر بعد الصلاة',
+        text: `"اللهم أنت السلام ومنك السلام، تباركت يا ذا الجلال والإكرام. لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير. اللهم لا مانع لما أعطيت، ولا معطي لما منعت، ولا ينفع ذا الجد منك الجد."`,
+        audio: 'audio/prayer.mp3'
+      },
+      {
+        title: 'دعاء الاستيقاظ من النوم',
+        text: `"الحمد لله الذي أحيانا بعدما أماتنا وإليه النشور."`,
+        audio: 'audio/wakeup.mp3'
+      },
+      {
+        title: 'دعاء النوم',
+        text: `"باسمك ربي وضعت جنبي، وبك أرفعه، إن أمسكت نفسي فارحمها، وإن أرسلتها فاحفظها بما تحفظ به عبادك الصالحين."`,
+        audio: 'audio/sleep.mp3'
+      }
+    ];
+
+    let currentIndex = 0;
+
+    function updateAzkar(index) {
+      const azkar = azkarList[index];
+      document.querySelector('#azkarText').innerText = azkar.text;
+      document.querySelector('#azkarTitle').innerText = azkar.title;
+    }
+
+    function playAudio(index) {
+      const audio = document.getElementById('audioPlayer');
+      audio.src = azkarList[index].audio;
+      audio.play();
+    }
+
+    function stopAudio() {
+      const audio = document.getElementById('audioPlayer');
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    function showRandomAzkar() {
+      currentIndex = Math.floor(Math.random() * azkarList.length);
+      updateAzkar(currentIndex);
+    }
+
+    function showPreviousAzkar() {
+      currentIndex = (currentIndex - 1 + azkarList.length) % azkarList.length;
+      updateAzkar(currentIndex);
+    }
+
+    function showNextAzkar() {
+      currentIndex = (currentIndex + 1) % azkarList.length;
+      updateAzkar(currentIndex);
+    }
+  </script>
+</body>
+</html>
