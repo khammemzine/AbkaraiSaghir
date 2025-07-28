@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>📝 أكمل الجملة</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom right, #ffe0f0, #ffffff);
+      text-align: center;
+      padding: 30px;
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 { color: #d81b60; margin-bottom: 10px; }
+    .difficulty { margin-bottom: 20px; }
+    .difficulty select {
+      font-size: 16px; padding: 6px 12px; border-radius: 8px;
+    }
+    .question {
+      font-size: 24px; margin: 20px 0; color: #6a1b9a; font-weight: bold;
+      animation: fadeIn 0.5s ease-in;
+    }
+    .options button {
+      display: inline-block; margin: 10px; padding: 12px 24px; font-size: 18px;
+      border-radius: 12px; border: 2px solid #f06292; cursor: pointer;
+      background-color: #ffffff; color: #d81b60;
+      transition: all 0.3s ease;
+    }
+    .options button:hover {
+      background-color: #fce4ec; transform: scale(1.05);
+    }
+    .feedback {
+      font-size: 22px; margin-top: 20px; font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .next, .restart {
+      display: none; margin-top: 25px; padding: 10px 20px; font-size: 18px;
+      background-color: #ab47bc; color: white; border: none;
+      border-radius: 10px; cursor: pointer; transition: background 0.3s ease;
+    }
+    .next:hover, .restart:hover { background-color: #8e24aa; }
+    .score {
+      font-size: 22px; margin-top: 30px; color: #4a148c;
+    }
+    .timer {
+      font-size: 20px; color: #d32f2f; margin-top: 10px; font-weight: bold;
+    }
+    .back-link {
+      display: inline-block; margin-top: 40px; padding: 10px 20px;
+      background-color: #388e3c; color: white; border-radius: 8px;
+      font-size: 16px; text-decoration: none; transition: background 0.3s ease;
+    }
+    .back-link:hover { background-color: #2e7d32; }
+	@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+  .question {
+    font-size: 20px;
+  }
+  .options button {
+    font-size: 16px;
+    padding: 10px 18px;
+  }
+  .difficulty select {
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+  .next, .restart {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+  .feedback {
+    font-size: 18px;
+  }
+  .score, .timer {
+    font-size: 18px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <h1>📝 أكمل الجملة</h1>
+  <div class="difficulty">
+    <label for="level">اختر مستوى الصعوبة:</label>
+    <select id="level" onchange="setDifficulty()">
+      <option value="easy">سهل</option>
+      <option value="medium">متوسط</option>
+      <option value="hard">صعب</option>
+    </select>
+  </div>
+  <div class="question" id="question"></div>
+  <div class="timer" id="timer"></div>
+  <div class="options" id="options"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next" id="nextBtn" onclick="nextQuestion()">➡️ السؤال التالي</button>
+  <button class="restart" id="restartBtn" onclick="restartGame()">🔁 أعد اللعب</button>
+  <div class="score" id="score"></div>
+  <div><a href="../activities.html" class="back-link">🔙 العودة إلى الأنشطة</a></div>
+
+  <!-- 🎵 أصوات -->
+  <audio id="correctSound" src="sounds/correct.mp3" preload="auto"></audio>
+  <audio id="wrongSound" src="sounds/wrong.mp3" preload="auto"></audio>
+  <audio id="timeoutSound" src="sounds/timeout.mp3" preload="auto"></audio>
+
+  <script>
+    const correctSound = document.getElementById("correctSound");
+    const wrongSound = document.getElementById("wrongSound");
+    const timeoutSound = document.getElementById("timeoutSound");
+
+    const allQuestions = {
+      easy: [
+        { sentence: "الشمس ___ في السماء.", options: ["تشرق", "تطبخ", "تسير"], answer: "تشرق" },
+        { sentence: "الولد ___ في الحديقة.", options: ["يجري", "يطير", "يشرب"], answer: "يجري" },
+        { sentence: "البطة ___ في الماء.", options: ["تسبح", "تمشي", "تطير"], answer: "تسبح" },
+        { sentence: "الأم ___ الطعام.", options: ["تطبخ", "ترسم", "تقرأ"], answer: "تطبخ" },
+        { sentence: "أنا ___ مع أصدقائي.", options: ["ألعب", "أغني", "أكتب"], answer: "ألعب" },
+        { sentence: "السيارة ___ في الطريق.", options: ["تسير", "تنط", "تنبح"], answer: "تسير" },
+        { sentence: "القط ___ على السطح.", options: ["ينام", "يطير", "يكتب"], answer: "ينام" },
+        { sentence: "أنا ___ قصة جميلة.", options: ["أقرأ", "أقفز", "أسبح"], answer: "أقرأ" },
+        { sentence: "السمكة ___ في البحر.", options: ["تسبح", "تطير", "تجلس"], answer: "تسبح" },
+        { sentence: "الولد ___ الكتاب.", options: ["يقرأ", "يرسم", "يطبخ"], answer: "يقرأ" },
+        { sentence: "الكرة ___ في السلة.", options: ["دخلت", "نامت", "أكلت"], answer: "دخلت" },
+        { sentence: "القطة تحب ___ الحليب.", options: ["شرب", "أكل", "لعب"], answer: "شرب" },
+        { sentence: "الوردة ___ جميلة.", options: ["تبدو", "يسبح", "يقفز"], answer: "تبدو" },
+        { sentence: "الطفل ___ القصة.", options: ["يقرأ", "يشرب", "يلعب"], answer: "يقرأ" },
+        { sentence: "أنا أكتب ___ أزرق.", options: ["بقلم", "بكتاب", "بلوحة"], answer: "بقلم" },
+        { sentence: "العصفور ___ في السماء.", options: ["يطير", "يسبح", "يجري"], answer: "يطير" },
+        { sentence: "الولد ___ بسرعة.", options: ["يجري", "ينام", "يجلس"], answer: "يجري" },
+        { sentence: "الشجرة تعطينا ___ .", options: ["الفواكه", "السيارات", "الملابس"], answer: "الفواكه" },
+        { sentence: "أنا أعيش في ___ .", options: ["مدينة", "صحراء", "بحر"], answer: "مدينة" },
+        { sentence: "الأرنب يحب أكل ___ .", options: ["الجزر", "السمك", "اللحم"], answer: "الجزر" }
+      ],
+      medium: [
+        { sentence: "العصفور ___ فوق الغصن.", options: ["يغرد", "يطبخ", "يسبح"], answer: "يغرد" },
+        { sentence: "النجوم ___ في الليل.", options: ["تلمع", "تمشي", "تغني"], answer: "تلمع" },
+        { sentence: "أحمد ___ دراجته في الشارع.", options: ["يقود", "يشرب", "يطير"], answer: "يقود" },
+        { sentence: "الطبيب ___ المرضى.", options: ["يعالج", "يلعب", "ينام"], answer: "يعالج" },
+        { sentence: "الطلاب ___ في الفصل.", options: ["يجلسون", "يطيرون", "يسبحون"], answer: "يجلسون" },
+        { sentence: "الطفل ___ الكرة بقدمه.", options: ["يركل", "يرسم", "يأكل"], answer: "يركل" },
+        { sentence: "أنا ___ واجبي المنزلي.", options: ["أحل", "أنام", "أسبح"], answer: "أحل" },
+        { sentence: "الطائرة ___ في السماء.", options: ["تحلق", "تسبح", "تقرأ"], answer: "تحلق" },
+        { sentence: "الرياح ___ بقوة.", options: ["تهب", "تنبح", "تكتب"], answer: "تهب" },
+        { sentence: "الطفل ___ إلى أمه.", options: ["يركض", "ينام", "يأكل"], answer: "يركض" },
+        { sentence: "أنا أحب ___ القصص.", options: ["قراءة", "قلي", "رسم"], answer: "قراءة" },
+        { sentence: "القط ___ عند المدفأة.", options: ["ينام", "يشرب", "يطير"], answer: "ينام" },
+        { sentence: "الشارع ___ بالناس.", options: ["مزدحم", "فارغ", "مظلم"], answer: "مزدحم" },
+        { sentence: "الأزهار ___ في الربيع.", options: ["تزهر", "تغني", "تسير"], answer: "تزهر" },
+        { sentence: "أنا ___ في البحر.", options: ["أسبح", "أطير", "أكتب"], answer: "أسبح" },
+        { sentence: "الساعة ___ التاسعة.", options: ["تشير إلى", "تأكل", "تكتب"], answer: "تشير إلى" },
+        { sentence: "العين ___ النور.", options: ["تبصر", "تنبح", "تسبح"], answer: "تبصر" },
+        { sentence: "الفلاح ___ الأرض.", options: ["يحرث", "يطير", "يأكل"], answer: "يحرث" },
+        { sentence: "الولد ___ الباب.", options: ["يفتح", "يطير", "ينام"], answer: "يفتح" },
+        { sentence: "المعلم ___ على السبورة.", options: ["يكتب", "يغني", "ينام"], answer: "يكتب" }
+      ],
+      hard: [
+        { sentence: "العلم نور والجهل ___ .", options: ["ظلام", "ضوء", "نار"], answer: "ظلام" },
+        { sentence: "الصدق ___ في المعاملات.", options: ["أساس", "عدو", "مرض"], answer: "أساس" },
+        { sentence: "البحّار يقود ___ في البحر.", options: ["السفينة", "السيارة", "القطار"], answer: "السفينة" },
+        { sentence: "الزهور تنمو في ___ .", options: ["الحديقة", "المطبخ", "الصحراء"], answer: "الحديقة" },
+        { sentence: "الصداقة كنز لا ___ .", options: ["يفنى", "يُشرب", "يُقلى"], answer: "يفنى" },
+        { sentence: "المطر ___ الأرض.", options: ["يروي", "يطبخ", "ينام"], answer: "يروي" },
+        { sentence: "النحلة تنتج ___ .", options: ["العسل", "الملح", "الماء"], answer: "العسل" },
+        { sentence: "الأسد ___ الغابة.", options: ["ملك", "خادم", "طائر"], answer: "ملك" },
+        { sentence: "التلميذ المجتهد ___ دروسه.", options: ["يراجع", "ينسى", "يهرب"], answer: "يراجع" },
+        { sentence: "الوقت كالسيف إن لم ___ قطعك.", options: ["تقطعه", "تأكله", "تشربه"], answer: "تقطعه" },
+        { sentence: "العصفور يبني ___ من القش.", options: ["عشه", "بيته", "سفينته"], answer: "عشه" },
+        { sentence: "العقل ___ الإنسان.", options: ["زينة", "جناح", "نار"], answer: "زينة" },
+        { sentence: "الحرية حق لكل ___ .", options: ["إنسان", "كتاب", "حيوان"], answer: "إنسان" },
+        { sentence: "الميزان يرمز إلى ___ .", options: ["العدل", "القوة", "السرعة"], answer: "العدل" },
+        { sentence: "الكتاب خير ___ .", options: ["جليس", "مزارع", "جندي"], answer: "جليس" },
+        { sentence: "القانون ___ على الجميع.", options: ["يسري", "ينام", "يطير"], answer: "يسري" },
+        { sentence: "الطيار يقود ___ .", options: ["الطائرة", "الدراجة", "القارب"], answer: "الطائرة" },
+        { sentence: "الإنترنت وسيلة ___ المعلومات.", options: ["لنقل", "لأكل", "لتنظيف"], answer: "لنقل" },
+        { sentence: "الرياضة ___ الجسم.", options: ["تقوي", "تضعف", "تنام"], answer: "تقوي" },
+        { sentence: "الهواء النقي ___ الحياة.", options: ["ينعش", "يطهى", "يقطع"], answer: "ينعش" }
+      ]
+    };
+
+    let questions = [], current = 0, score = 0, timer, timeLeft = 20;
+
+    function setDifficulty() {
+      const level = document.getElementById("level").value;
+      questions = [...allQuestions[level]];
+      if (questions.length === 0) {
+        alert("لا توجد أسئلة لهذا المستوى بعد.");
+        return;
+      }
+      restartGame();
+    }
+
+    function loadQuestion() {
+      clearInterval(timer);
+      timeLeft = 20;
+      updateTimerDisplay();
+      timer = setInterval(countdown, 1000);
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("score").textContent = `النقاط: ${score} / ${questions.length}`;
+      const q = questions[current];
+      document.getElementById("question").textContent = q.sentence;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(btn, option);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById("timer").textContent = `الوقت المتبقي: ${timeLeft} ثانية`;
+    }
+
+    function countdown() {
+      timeLeft--;
+      updateTimerDisplay();
+      if (timeLeft === 0) {
+        clearInterval(timer);
+        document.getElementById("feedback").textContent = "⏱️ انتهى الوقت!";
+        document.getElementById("feedback").style.color = "#d32f2f";
+        document.querySelectorAll(".options button").forEach(btn => btn.disabled = true);
+        document.getElementById("nextBtn").style.display = "inline-block";
+        try { timeoutSound.play(); } catch (e) {}
+      }
+    }
+
+    function checkAnswer(button, selected) {
+      clearInterval(timer);
+      const correct = questions[current].answer;
+      const feedback = document.getElementById("feedback");
+      document.querySelectorAll(".options button").forEach(btn => btn.disabled = true);
+      if (selected === correct) {
+        feedback.textContent = "✔️ إجابة صحيحة!";
+        feedback.style.color = "green";
+        button.style.backgroundColor = "#c8e6c9";
+        score++;
+        try { correctSound.play(); } catch (e) {}
+      } else {
+        feedback.textContent = `❌ خطأ! الإجابة الصحيحة: ${correct}`;
+        feedback.style.color = "red";
+        button.style.backgroundColor = "#ffcdd2";
+        try { wrongSound.play(); } catch (e) {}
+      }
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        loadQuestion();
+      } else {
+        clearInterval(timer);
+        document.getElementById("question").textContent = "🎉 أحسنت! لقد أكملت اللعبة.";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("feedback").textContent = "";
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("restartBtn").style.display = "inline-block";
+        document.getElementById("score").textContent = `النتيجة النهائية: ${score} من ${questions.length}`;
+        document.getElementById("timer").textContent = "";
+      }
+    }
+
+    function restartGame() {
+      current = 0;
+      score = 0;
+      if (questions.length === 0) {
+        setDifficulty();
+        return;
+      }
+      loadQuestion();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      correctSound.volume = 1.0;
+      wrongSound.volume = 1.0;
+      timeoutSound.volume = 1.0;
+      setDifficulty();
+    });
+  </script>
+</body>
+</html>
